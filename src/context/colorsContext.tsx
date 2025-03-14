@@ -29,7 +29,7 @@ export default function ColorsProvider({ children }: { children: ReactNode }) {
   const [loading, setLoading] = useState(false);
   const [isRegenerating, setIsRegenerating] = useState(false);
   const [lockedHexes, setLockedHexes] = useState<string[]>([]);
-  console.log(lockedHexes);
+
   const request = async (prompt: string) => {
     try {
       setLoading(true);
@@ -66,7 +66,6 @@ export default function ColorsProvider({ children }: { children: ReactNode }) {
       });
       if (!response) throw new Error("Failed to regenerate the colors");
       const data = await response.json();
-      console.log(data.hexes)
       setPalette(prev => ({...prev, reasoning: prev?.reasoning ?? "", hexes: [...lockedHexes, ...data.hexes]}));
     } catch (e) {
       console.error(e);
