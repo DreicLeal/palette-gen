@@ -16,9 +16,6 @@ export default function ColorCard({ hex }: { hex: string }) {
   const [isRegen, setIsRegen] = useState(false);
   const [locked, setLocked] = useState(false);
 
-  const hexesRegen = lockedHexes.includes(hex)
-  console.log(hexesRegen)
-
   const regenOne = async (keep: string[], change: string) => {
     if (!palette?.hexes) return;
     const index = palette.hexes.lastIndexOf(change);
