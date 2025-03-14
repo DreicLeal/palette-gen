@@ -3,10 +3,11 @@ import { useColors } from "@/context/colorsContext";
 import { FormEvent, useState } from "react";
 
 export default function Form() {
-  const { request, loading} = useColors();
+  const { request} = useColors();
   const [prompt, setPrompt] = useState("");
 
   const sendRequest = async (e: FormEvent) => {
+    if (prompt.trim() === "") throw new Error("Need to have something written on the prompt")
     e.preventDefault();
     await request(prompt);
 
@@ -31,7 +32,7 @@ export default function Form() {
         type="submit"
         className="text-slate-600 bg-slate-200 p-2 rounded-md font-bold"
       >
-        {loading ? "Analisando" : "Enviar"}
+        Enviar
       </button>
     </form>
   );
