@@ -38,8 +38,8 @@ export async function POST(req: Request) {
     const palette = completion.choices[0].message.parsed;
     
     return NextResponse.json(palette);
-  } catch (e:any) {
-    console.error("OpenAI API Error:", e?.response?.data || e.message);
-    return NextResponse.json({error:e.message}, {status:500})
+  } catch (e) {
+    console.error(e);
+    return NextResponse.json({error:e}, {status:500})
   }
 }
