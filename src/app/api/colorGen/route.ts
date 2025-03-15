@@ -14,8 +14,10 @@ const API_KEY = process.env.OPENAI_API_KEY;
 const openai = new OpenAI({ apiKey: API_KEY });
 
 export async function POST(req: Request) {
-  const { prompt } = await req.json();
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 15000);
   try {
+    const { prompt } = await req.json();
     const completion = await openai.beta.chat.completions.parse({
       model: "gpt-4o-mini",
       response_format: zodResponseFormat(paletteSchema, "palette"),
@@ -31,12 +33,13 @@ export async function POST(req: Request) {
         },
       ],
     });
+
+    clearTimeout(timeout)
     const palette = completion.choices[0].message.parsed;
-    if (!palette) {
-      throw new Error("Failed to generate the colors");
-    }
+    
     return NextResponse.json(palette);
-  } catch (e) {
-    console.error(e);
+  } catch (e:any) {
+    console.error("OpenAI API Error:", e?.response?.data || e.message);
+    return NextResponse.json({error:e.message}, {status:500})
   }
 }
