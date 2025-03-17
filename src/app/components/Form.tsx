@@ -34,7 +34,7 @@ export default function Form() {
           className="w-full h-[180px] bg-white/30 p-3 rounded-md border text-slate-500 border-slate-300 
         focus:outline-none focus:ring-2 focus:ring-slate-500 resize-none 
         placeholder:text-slate-500"
-          placeholder="Exemplo: Tenho uma empresa de marketing digital focada em crescimento orgânico para pequenos negócios..."
+          placeholder="Faça uma descrição detalhada da sua ideia de negócio e preferência de cores e deixe a IA gerar uma paleta de cores para você. ✨"
         />
 
         <button
