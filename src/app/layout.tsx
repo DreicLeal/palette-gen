@@ -22,7 +22,7 @@ export const metadata: Metadata = {
   },
   other: {
     "google-adsense-account": "ca-pub-2263727171319959",
-    "google-site-verification" : "Hfqn78tsQhnbUvEVhzauBYiqntVD8IhH_OswE5hJlY0"
+    "google-site-verification": "Hfqn78tsQhnbUvEVhzauBYiqntVD8IhH_OswE5hJlY0",
   },
 };
 
@@ -37,6 +37,7 @@ export default function RootLayout({
         <body
           className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         >
+
           <Script
             async
             strategy="afterInteractive"
@@ -50,7 +51,7 @@ export default function RootLayout({
           ></script>
           <ins
             className="adsbygoogle"
-            style={{display:"block"}}
+            style={{ display: "block" }}
             data-ad-client="ca-pub-2263727171319959"
             data-ad-slot="7265914799"
             data-ad-format="auto"
