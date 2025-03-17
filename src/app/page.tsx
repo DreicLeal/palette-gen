@@ -1,11 +1,16 @@
-import Colors from "./components/colorsContainer/Colors";
-import FormReasoning from "./components/FormReasoning";
+import Iridescence from "@/Backgrounds/Iridescence/Iridescence";
+import Form from "./components/Form";
 
 export default function Home() {
   return (
-    <div className="p-2 flex flex-col gap-2 lg:w-[850px] mx-auto">
-      <Colors />
-      <FormReasoning />
+    <div className="relative w-full h-screen">
+      <Form />
+      <Iridescence
+            color={[1, 1, 1]}
+            mouseReact={false}
+            amplitude={0.1}
+            speed={0.4}
+          />
     </div>
   );
 }

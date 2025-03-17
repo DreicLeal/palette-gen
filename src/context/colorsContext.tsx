@@ -29,7 +29,7 @@ export default function ColorsProvider({ children }: { children: ReactNode }) {
   const [loading, setLoading] = useState(false);
   const [isRegenerating, setIsRegenerating] = useState(false);
   const [lockedHexes, setLockedHexes] = useState<string[]>([]);
-  console.log(lockedHexes);
+
   const request = async (prompt: string) => {
     try {
       setLoading(true);
@@ -51,27 +51,45 @@ export default function ColorsProvider({ children }: { children: ReactNode }) {
   };
 
   const regenColorsRequest = async () => {
-    const setRegeneratedData = {
-      currentHexes: palette,
-      quantityToRegen: lockedHexes.length > 0 ? 5 - lockedHexes.length : 5,
+    if (!palette?.colors) return;
+  
+    const unlockedColors = Object.entries(palette.colors)
+      .filter(([, hex]) => !lockedHexes.includes(hex)) // Only regenerate unlocked colors
+      .map(([role]) => role); // Get the roles to regenerate
+  
+    if (unlockedColors.length === 0) return; // Nothing to regenerate
+  
+    const requestData = {
+      currentColors: palette.colors, // Send the current palette colors
+      rolesToRegen: unlockedColors,  // Send only the roles that need new colors
     };
+  
     try {
-    setIsRegenerating(true)
+      setIsRegenerating(true);
+  
       const response = await fetch("/api/regenColors", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ setRegeneratedData }),
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(requestData), // ✅ Send correctly structured data
       });
-      if (!response) throw new Error("Failed to regenerate the colors");
+  
+      if (!response.ok) throw new Error("Failed to regenerate the colors");
+  
       const data = await response.json();
-      console.log(data.hexes)
-      setPalette(prev => ({...prev, reasoning: prev?.reasoning ?? "", hexes: [...lockedHexes, ...data.hexes]}));
+  
+      // ✅ Merge new colors while keeping locked ones unchanged
+      setPalette((prev) => ({
+        ...prev,
+        reasoning: prev?.reasoning ?? "",
+        colors: {
+          ...prev?.colors,
+          ...data.colors, // Update only regenerated colors
+        },
+      }));
     } catch (e) {
       console.error(e);
     } finally {
-      setIsRegenerating(false)
+      setIsRegenerating(false);
     }
   };
 
