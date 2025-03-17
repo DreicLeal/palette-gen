@@ -2,7 +2,7 @@
 	Installed from https://reactbits.dev/ts/tailwind/
 */
 
-import { useEffect, useRef } from "react";
+import { JSX, useEffect, useRef } from "react";
 
 class Pixel {
   width: number;
@@ -111,7 +111,7 @@ class Pixel {
   }
 }
 
-function getEffectiveSpeed(value: any, reducedMotion: any) {
+function getEffectiveSpeed(value: string, reducedMotion: unknown) {
   const min = 0;
   const max = 100;
   const throttle = 0.001;
@@ -190,7 +190,7 @@ export default function PixelCard({
   const containerRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const pixelsRef = useRef<Pixel[]>([]);
-  const animationRef = useRef<any>(null);
+  const animationRef = useRef<number>(0);
   const timePreviousRef = useRef(performance.now());
   const reducedMotion = useRef(
     window.matchMedia("(prefers-reduced-motion: reduce)").matches
@@ -234,7 +234,7 @@ export default function PixelCard({
             x,
             y,
             color,
-            getEffectiveSpeed(finalSpeed, reducedMotion),
+            getEffectiveSpeed(String(finalSpeed), reducedMotion),
             delay
           )
         );
@@ -260,7 +260,7 @@ export default function PixelCard({
     let allIdle = true;
     for (let i = 0; i < pixelsRef.current.length; i++) {
       const pixel = pixelsRef.current[i];
-      // @ts-ignore
+      // @ts-expect-error the expression is callable
       pixel[fnName]();
       if (!pixel.isIdle) {
         allIdle = false;
